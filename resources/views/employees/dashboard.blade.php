@@ -1,6 +1,7 @@
 @extends('includes.emp-menu')
 
 @section('content')
+
     @php
         $attendances = \App\Models\Attendance::where('employee_id', Auth::id())->get();
     @endphp
@@ -53,9 +54,7 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-area">
-                            <canvas id="myAreaChart" width="824" height="320"
-                                style="display: block; width: 824px; height: 320px;"
-                                class="chartjs-render-monitor"></canvas>
+                            <div id="attendance-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -65,4 +64,65 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{{ asset('js/updateTime.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $.ajax({
+                url: '{{ route('api.attendances') }}',
+                method: 'GET',
+                success: function(data) {
+                    const attendanceData = {
+                        Present: 0,
+                        Absent: 0,
+                        Leave: 0
+                    };
+
+                    data.forEach(attendance => {
+                        attendanceData[attendance.status]++;
+                    });
+
+                    Highcharts.chart('attendance-chart', {
+                        chart: {
+                            type: 'line'
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        title: {
+                            text: 'Employee Attendance'
+                        },
+                        xAxis: {
+                            categories: ['Present', 'Absent', 'Leave'],
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Days'
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'Days',
+                            data: [attendanceData.Present, attendanceData.Absent,
+                                attendanceData.Leave
+                            ]
+                        }]
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

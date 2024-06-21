@@ -120,8 +120,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
 });
 
 // ********** User Routes *********
-Route::group(['middleware' => ['web', 'isUser']], function () {
+Route::group(['prefix' => 'employees', 'middleware' => ['web', 'isUser']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard']);
     Route::post('/attendance/mark', [AttendanceController::class, 'mark'])->name('attendance.mark');
-    Route::get('/attendance/show/{employeeCode}', [AttendanceController::class, 'show'])->name('attendance.show');
+    Route::get('/attendance/show/{employeeCode}', [AttendanceController::class, 'show'])->name('emp-attendance.show');
+
+    Route::get('/api/attendances', [AttendanceController::class, 'getAttendances'])->name('api.attendances');
+
 });

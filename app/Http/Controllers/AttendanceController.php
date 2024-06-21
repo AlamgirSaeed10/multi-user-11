@@ -101,7 +101,8 @@ class AttendanceController extends Controller
     public function show($employeeCode)
     {
         // Find employee by EmployeeCode
-        $employee = Employees::where('EmployeeCode', $employeeCode)->first();
+        $employee = Employees::where('id', $employeeCode)->first();
+
 
         if (!$employee) {
             abort(404, 'Employee not found');
@@ -110,9 +111,23 @@ class AttendanceController extends Controller
         // Get attendance records for the employee
         $attendances = Attendance::where('employee_id', $employeeCode)->orderBy('date', 'desc')->get();
 
-        return view('attendances.show', [
+        return view('attendances.emp-show', [
             'employee' => $employee,
             'attendances' => $attendances,
         ]);
+    }
+
+
+
+    public function getAttendances()
+    {
+        // Get logged-in user's ID
+        $userId = Auth::id();
+
+        // Fetch attendance data for the logged-in user
+        $attendances = Attendance::where('employee_id', $userId)->orderBy('date', 'desc')->get();
+
+        // Return as JSON response
+        return response()->json($attendances);
     }
 }
