@@ -26,7 +26,7 @@ class RolesTableSeeder extends Seeder
 
         $admin = [
 
-            'name' => 'Admin', 'email' => 'admin@gmail.com', 'RoleID' => 1,'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(),'updated_at' => now()
+            'EmployeeCode'=> 'emp-1000' , 'name' => 'Admin', 'email' => 'admin@gmail.com', 'RoleID' => 1,'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(),'updated_at' => now()
         ];
 
         DB::table('roles')->insert($roles);

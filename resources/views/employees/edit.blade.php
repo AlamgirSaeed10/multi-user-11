@@ -193,7 +193,7 @@
                 <div class="col-sm-12 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label for="Password">Password</label>
-                        <input id="password" type="text" class="form-control" name="Password" value="{{ $employee->Password }}" readonly>
+                        <input id="password" type="text" class="form-control" name="Password" value="{{ $employee->Password }}" >
 
                     </div>
                 </div>

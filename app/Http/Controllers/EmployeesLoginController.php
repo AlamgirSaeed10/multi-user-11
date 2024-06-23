@@ -2,86 +2,143 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employees;
 use Illuminate\Http\Request;
+use App\Models\EmployeesLogin;
+use App\Models\Employees;
+use App\Models\Role;
 
 class EmployeesLoginController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $employeesLogins = Employees::all();
-        return view('employees_login.index', compact('employeesLogins'));
+        $employees = Employees::all();
+        $roles = Role::all();
+        return view('employees_login.index', compact('employees', 'roles'));
     }
 
+    public function show($employeeCode)
+    {
+        $employee = Employees::where('EmployeeCode', $employeeCode)->first();
+
+        if (!$employee) {
+            return response()->json(['error' => 'Employee not found'], 404);
+        }
+
+        return response()->json($employee);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        return view('employees_login.create');
+        $employees = Employees::all();
+        $roles = Role::all();
+        return view('employees_login.create', compact('employees', 'roles'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'EmployeeCode' => 'required|unique:employees_logins',
-            'FirstName' => 'required',
-            'LastName' => 'required',
-            'Email' => 'required|email|unique:employees_logins',
+            'EmployeeCode' => 'required',
             'Role' => 'required',
             'Password' => 'required',
-            'ActiveStatus' => 'required|integer',
         ]);
 
-        Employees::create($request->all());
+        $employee = Employees::where('EmployeeCode', $request->EmployeeCode)->firstOrFail();
 
-        return redirect()->route('employees_login.index')->with('success', 'Employee Login created successfully.');
+        $employeesLogin = new EmployeesLogin();
+        $employeesLogin->EmployeeCode = $request->EmployeeCode;
+        $employeesLogin->Role = $request->Role;
+        $employeesLogin->Name = $employee->FirstName . ' ' . $employee->LastName;
+        $employeesLogin->Password = bcrypt($request->Password); // Hash the password before saving
+
+        $employeesLogin->save();
+
+        return redirect()->route('employees_login.index')
+            ->with('success', 'Employee login created successfully.');
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $employeesLogin = Employees::findOrFail($id);
-        return view('employees_login.edit', compact('employeesLogin'));
+        $employeesLogin = EmployeesLogin::findOrFail($id);
+        $employees = Employees::all();
+        $roles = Role::all();
+        return view('employees_login.edit', compact('employeesLogin', 'employees', 'roles'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'EmployeeCode' => 'required|unique:employees_logins,EmployeeCode,' . $id,
-            'FirstName' => 'required',
-            'LastName' => 'required',
-            'Email' => 'required|email|unique:employees_logins,Email,' . $id,
+            'EmployeeCode' => 'required',
             'Role' => 'required',
             'Password' => 'required',
-            'ActiveStatus' => 'required|integer',
         ]);
 
-        $employeesLogin = Employees::findOrFail($id);
-        $employeesLogin->update($request->all());
+        $employeesLogin = EmployeesLogin::findOrFail($id);
+        $employee = Employees::where('EmployeeCode', $request->EmployeeCode)->firstOrFail();
 
-        return redirect()->route('employees_login.index')->with('success', 'Employee Login updated successfully.');
-    }
+        $employeesLogin->EmployeeCode = $request->EmployeeCode;
+        $employeesLogin->Role = $request->Role;
+        $employeesLogin->Name = $employee->FirstName . ' ' . $employee->LastName;
+        $employeesLogin->Password = bcrypt($request->Password); // Hash the password before saving
 
-    public function ban($id)
-    {
-        $employeesLogin = Employees::findOrFail($id);
-        $employeesLogin->ActiveStatus = 0;
         $employeesLogin->save();
 
-        return redirect()->route('employees_login.index')->with('success', 'Employee Login banned successfully.');
+        return redirect()->route('employees_login.index')
+            ->with('success', 'Employee login updated successfully.');
     }
 
-    public function active($id)
-    {
-        $employeesLogin = Employees::findOrFail($id);
-        $employeesLogin->ActiveStatus = 1;
-        $employeesLogin->save();
-
-        return redirect()->route('employees_login.index')->with('success', 'Employee Login activated successfully.');
-    }
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $employeesLogin = Employees::findOrFail($id);
+        $employeesLogin = EmployeesLogin::findOrFail($id);
         $employeesLogin->delete();
 
-        return redirect()->route('employees_login.index')->with('success', 'Employee Login deleted successfully.');
+        return redirect()->route('employees_login.index')
+            ->with('success', 'Employee login deleted successfully.');
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    // public function show($id)
+    // {
+    //     $employeesLogin = EmployeesLogin::findOrFail($id);
+    //     return view('employees_login.show', compact('employeesLogin'));
+    // }
 }

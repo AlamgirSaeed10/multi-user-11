@@ -35,7 +35,7 @@ class CreateEmployeesTable extends Migration
             $table->string('AccHolderName');
             $table->string('EmployeeImage')->nullable();
             $table->integer('ActiveStatus')->default(1);
-            $table->string('Role');
+            $table->string('Role')->nullable();
             $table->string('Password')->nullable();
             $table->timestamps();
         });

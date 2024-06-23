@@ -37,6 +37,9 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::get('/profile', [UserSettingController::class, 'profile'])->name('user.profile');
     Route::get('/settings', [UserSettingController::class, 'settings'])->name('user.settings');
 
+    Route::get('/employeeslogin', [EmployeesLoginController::class, 'index'])->name('employeeslogin.index');
+
+
 
     // Employees routes
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
@@ -102,8 +105,31 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy'); // Remove the specified resource from storage
 
 
-    // routes/web.php
 
+
+
+
+    // Route::get('/employees_login', [EmployeesLoginController::class, 'index'])->name('employees_login.index');
+    // Route::get('/employees_login/create', [EmployeesLoginController::class, 'create'])->name('employees_login.create');
+    // Route::post('/employees_login/store', [EmployeesLoginController::class, 'store'])->name('employees_login.store');
+    // Route::get('/employees_login/edit/{id}', [EmployeesLoginController::class, 'edit'])->name('employees_login.edit');
+    // Route::put('/employees_login/update/{id}', [EmployeesLoginController::class, 'update'])->name('employees_login.update');
+    // Route::delete('/employees_login/delete/{id}', [EmployeesLoginController::class, 'destroy'])->name('employees_login.destroy');
+    // Route::get('/employees_login/show/{id}', [EmployeesLoginController::class, 'show'])->name('employees_login.show');
+
+
+    Route::get('employees_login', [EmployeesLoginController::class, 'index'])->name('employees_login.index');
+    Route::get('employees_login/show/{employeeCode}', [EmployeesLoginController::class, 'emp.show']);
+    Route::post('employees_login/store', [EmployeesLoginController::class, 'store'])->name('employees_login.store');
+
+
+
+
+
+
+
+
+    // routes/web.php
     Route::resource('employees_login', EmployeesLoginController::class);
     Route::put('/employees_login/{id}/ban', [EmployeesLoginController::class, 'ban'])->name('employees_login.ban');
     Route::put('/employees_login/{id}/active', [EmployeesLoginController::class, 'active'])->name('employees_login.active');
@@ -112,6 +138,24 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
 // ********** Sub Admin Routes *********
 Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], function () {
     Route::get('/dashboard', [SubAdminController::class, 'dashboard']);
+
+
+    // Expense Routes
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');       // Display a listing of the resource
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create'); // Show the form for creating a new resource
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');        // Store a newly created resource in storage
+    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');  // Display the specified resource
+    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit'); // Show the form for editing the specified resource
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');  // Update the specified resource in storage
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy'); // Remove the specified resource from storage
+    // Office Timing Routes
+    Route::get('/office-timings', [OfficeTimingController::class, 'index'])->name('office-timings.index');
+    Route::get('/office-timings/create', [OfficeTimingController::class, 'create'])->name('office-timings.create');
+    Route::post('/office-timings', [OfficeTimingController::class, 'store'])->name('office-timings.store');
+    Route::get('/office-timings/{officeTiming}', [OfficeTimingController::class, 'show'])->name('office-timings.show');
+    Route::get('/office-timings/{officeTiming}/edit', [OfficeTimingController::class, 'edit'])->name('office-timings.edit');
+    Route::put('/office-timings/{officeTiming}', [OfficeTimingController::class, 'update'])->name('office-timings.update');
+    Route::delete('/office-timings/{officeTiming}', [OfficeTimingController::class, 'destroy'])->name('office-timings.destroy');
 });
 
 // ********** Admin Routes *********
@@ -126,5 +170,4 @@ Route::group(['prefix' => 'employees', 'middleware' => ['web', 'isUser']], funct
     Route::get('/attendance/show/{employeeCode}', [AttendanceController::class, 'show'])->name('emp-attendance.show');
 
     Route::get('/api/attendances', [AttendanceController::class, 'getAttendances'])->name('api.attendances');
-
 });
