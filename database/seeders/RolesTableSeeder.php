@@ -26,7 +26,10 @@ class RolesTableSeeder extends Seeder
 
         $admin = [
 
-            'EmployeeCode'=> 'emp-1000' , 'name' => 'Admin', 'email' => 'admin@gmail.com', 'RoleID' => 1,'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(),'updated_at' => now()
+            ['EmployeeCode' => 'emp-1000', 'name' => 'Super Admin', 'email' => 'admin@gmail.com', 'RoleID' => 1, 'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['EmployeeCode' => 'emp-1001', 'name' => 'Manager', 'email' => 'manager@gmail.com', 'RoleID' => 2, 'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['EmployeeCode' => 'emp-1002', 'name' => 'Client', 'email' => 'client@gmail.com', 'RoleID' => 3, 'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['EmployeeCode' => 'emp-1003', 'name' => 'Employee', 'email' => 'emp@gmail.com', 'RoleID' => 4, 'email_verified_at' => null, 'password' => Hash::make('12345678'), 'remember_token' => null, 'created_at' => now(), 'updated_at' => now()],
         ];
 
         DB::table('roles')->insert($roles);

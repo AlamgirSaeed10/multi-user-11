@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($employeesLogins as $employeesLogin)
+            @foreach ($employees as $employeesLogin)
                 <tr>
                     <td>{{ $employeesLogin->EmployeeCode }}</td>
                     <td>{{ $employeesLogin->FirstName }}</td>
