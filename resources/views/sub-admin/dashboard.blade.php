@@ -1,94 +1,65 @@
 @extends('includes.menu')
 
 @section('content')
-    <h2 class="mb-4">Sub Admin</h2>
-    <div class="card">
-        <div class="card-header bg-info text-white">
-            <h5 class="font-weight-bold">Employee List</h5>
-        </div>
+    <div class="container-fluid">
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Designation</th>
-                            <th>Joining Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($employee_list as $employee)
-                            <tr>
-                                <td>{{ $employee->EmployeeCode }}</td>
-                                <td>{{ $employee->FirstName }} {{ $employee->LastName }}</td>
-                                <td>{{ $employee->Email }}</td>
-                                <td>{{ $employee->Department }}</td>
-                                <td>{{ $employee->Designation }}</td>
-                                <td>{{ $employee->JoiningDate }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Manager Dashboard</h1>
+        <!-- Content Row -->
+        <div class="row">
+
+            <div class="col-xl-8 col-lg-7">
+
+                <!-- Area Chart -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Revenue Chart</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <canvas id="myAreaChart" width="824" height="320"
+                                style="display: block; width: 824px; height: 320px;"
+                                class="chartjs-render-monitor"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donut Chart -->
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Engagement Chart</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-pie pt-4">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <canvas id="myPieChart" width="379" height="253"
+                                style="display: block; width: 379px; height: 253px;"
+                                class="chartjs-render-monitor"></canvas>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
-
-    <div class="card mt-3">
-        <div class="card-header bg-info text-white">
-            <h5 class="font-weight-bold">Attendance List</h5>
-        </div>
-
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Employee Fullname</th>
-                            <th>Date</th>
-                            <th>In Time</th>
-                            <th>Out Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($attendance_list as $attendance)
-                            <tr>
-                                <td>{{ $attendance->employee_id }}</td>
-                                <td>
-                                    @if ($attendance->employee)
-                                        {{ $attendance->employee->FirstName }} {{ $attendance->employee->LastName }}
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                                <td>{{ $attendance->date }}</td>
-                                <td>{{ $attendance->in_time }}</td>
-                                <td>{{ $attendance->out_time ?: 'N/A' }}</td>
-                                <td>
-                                    @if ($attendance->status == 'Present')
-                                        <span class="badge badge-success">{{ $attendance->status }}</span>
-                                    @elseif ($attendance->status == 'Absent')
-                                        <span class="badge badge-danger">{{ $attendance->status }}</span>
-                                    @elseif ($attendance->status == 'Leave')
-                                        <span class="badge badge-warning">{{ $attendance->status }}</span>
-                                    @else
-                                        {{ $attendance->status }}
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-
-
-
 @endsection
