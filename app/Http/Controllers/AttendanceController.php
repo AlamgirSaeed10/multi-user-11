@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Employees;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -101,13 +102,10 @@ class AttendanceController extends Controller
     public function show($employeeCode)
     {
         // Find employee by EmployeeCode
-        $employee = Employees::where('id', $employeeCode)->first();
-
-
+        $employee = Employees::where('EmployeeCode', $employeeCode)->first();
         if (!$employee) {
             abort(404, 'Employee not found');
         }
-
         // Get attendance records for the employee
         $attendances = Attendance::where('employee_id', $employeeCode)->orderBy('date', 'desc')->get();
 
@@ -119,13 +117,21 @@ class AttendanceController extends Controller
 
 
 
+    public function getEmployees()
+    {
+        // Fetch attendance data for the logged-in user
+        $emp_list = DB::table('employees')->get();
+
+        // dd($attendances);
+        return view('employees.view-attandence',compact('emp_list'));
+    }
     public function getAttendances()
     {
         // Get logged-in user's ID
         $userId = Auth::id();
 
         // Fetch attendance data for the logged-in user
-        $attendances = Attendance::where('employee_id', $userId)->orderBy('date', 'desc')->get();
+        $attendances = Attendance::where('EmployeeCode', $userId)->orderBy('date', 'desc')->get();
 
         // Return as JSON response
         return response()->json($attendances);

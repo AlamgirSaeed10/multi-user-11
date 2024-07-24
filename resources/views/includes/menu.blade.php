@@ -34,7 +34,7 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
                 <div class="sidebar-brand-text mx-3">Reblate Sols</div>
             </a>
 
@@ -60,7 +60,7 @@
                         <a class="collapse-item" href="{{ route('tasks.index') }}">Tasks</a>
                         <a class="collapse-item" href="{{ route('attendances.index') }}">Attendence</a>
                         <a class="collapse-item" href="{{ route('employees_login.index') }}">Employees Login</a>
-                        <a class="collapse-item" href="">Leaves</a>
+                        {{-- <a class="collapse-item" href="">Leaves</a> --}}
                     </div>
                 </div>
             </li>
@@ -76,7 +76,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Customers</h6>
-                        <a class="collapse-item" href="{{ route('customers.index') }}">Customsers</a>
+                        <a class="collapse-item" href="{{ route('customers.index') }}">Customers</a>
                     </div>
                 </div>
             </li>

@@ -40,7 +40,7 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
                 <div class="sidebar-brand-text mx-3">Reblate Sols</div>
             </a>
 
@@ -52,7 +52,7 @@
                     <span>Dashboard</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('emp-attendance.show', ['employeeCode' => Auth::user()->id]) }}">
+                <a class="nav-link" href="{{ route('attendances.emp') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Attendance</span>
                 </a>
