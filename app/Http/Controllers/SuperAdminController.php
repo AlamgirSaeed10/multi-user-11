@@ -17,21 +17,21 @@ class SuperAdminController extends Controller
         $total_emp = count(DB::table('employees')->get());
         $total_task = count(DB::table('tasks')->get());
 
-        $emp_list = Employees::where('id','!=',Auth::user()->id)->get();
-        return view('super-admin.dashboard',compact('emp_list','total_emp','total_task'));
+        $emp_list = Employees::where('id', '!=', Auth::user()->id)->get();
+        return view('super-admin.dashboard', compact('emp_list', 'total_emp', 'total_task'));
     }
 
     public function users()
     {
-        $emp_list = User::with('roles')->where('RoleID','!=',1)->get();
+        $emp_list = User::with('roles')->where('RoleID', '!=', 1)->get();
         return view('super-admin.users', compact('emp_list'));
     }
 
     public function manageRole()
     {
-        $users = User::where('RoleID','!=',1)->get();
+        $users = User::where('RoleID', '!=', 1)->get();
         $roles = Role::all();
-        return view('super-admin.manage-role', compact(['users','roles']));
+        return view('super-admin.manage-role', compact(['users', 'roles']));
     }
 
     public function updateRole(Request $request)
@@ -41,5 +41,4 @@ class SuperAdminController extends Controller
         ]);
         return redirect()->back();
     }
-
 }

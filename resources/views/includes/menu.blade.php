@@ -59,7 +59,7 @@
                         <a class="collapse-item" href="{{ route('employees.index') }}">Manage Employees</a>
                         <a class="collapse-item" href="{{ route('tasks.index') }}">Tasks</a>
                         <a class="collapse-item" href="{{ route('attendances.index') }}">Attendence</a>
-                        <a class="collapse-item" href="{{ route('employees_login.index') }}">Employees Login</a>
+                        {{-- <a class="collapse-item" href="{{ route('employees_login.index') }}">Employees Login</a> --}}
                         {{-- <a class="collapse-item" href="">Leaves</a> --}}
                     </div>
                 </div>
